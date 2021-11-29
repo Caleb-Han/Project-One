@@ -1,0 +1,44 @@
+<%- include ('./partials/header') %>
+    <%- include ('./partials/navbar') %>
+        <div class="full-body-container">
+
+            <div class="parent-container">
+                <div class="form-container">
+                    <form class="input-form" action="/todolist" method="POST">
+                        <input class="reference-input" type="text" id="jobRef" name="jobRef" placeholder="Ref:">
+                        <input class="task-input" type="text" id="toDoItem" name="toDoItem" placeholder="Task">
+                        <button type="reset" class="reset-button"> <i class="fas fa-times fa-2x"></i></button>
+                        <button type="submit" class="add-button"><i class="fas fa-plus fa-2x"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="parent-container">
+                <div class="items-container ">
+                    <ul>
+                        <% for (item of toDoList) { %>
+                            <div class="line-item-container">
+                                <li>Job: <%= item.reference %> Item: <%= item.description %>
+                                            <button id="editButton">Edit</button>
+                                            <form action="/todolist/<%= item._id %>?_method=PUT" method="POST">
+                                                <div id="popUp">
+                                                    Ref: <input type=" text" id="jobRef" name="jobRef"
+                                                        value="<%= item.reference %>">
+                                                    Item: <input type="text" id="toDoItem" name="toDoItem"
+                                                        value="<%= item.description %>">
+                                                    <button> Accept Edit</button>
+                                                </div>
+                                            </form>
+
+                                            <form action=" /todolist/<%=item._id %>?_method=DELETE" method="POST">
+                                                <button>Delete</button>
+                                            </form>
+                                </li>
+                            </div>
+                            <% } %>
+                    </ul>
+
+                    <input type="button" value="Lodge all">
+                </div>
+            </div>
+        </div>
+        <%- include ('./partials/footer') %>
