@@ -11,15 +11,33 @@ const ToDoSchema = new Schema({
         required: true
     },
     startTime: {
-        type: Date
+        type: Number
     },
     endTime: {
-        type: Date
+        type: Number
     },
     duration: {
-        type: Date
-        }
+        type: Number,
+        default: 0
+        },
+    status: {
+        type: Boolean,
+        default: false
+        },
+    completed: {
+        type: Boolean,
+        default: false
+    }
+
 })
+
+
+function displayDuration(seconds) {
+    const dict = {}
+    dict[hours] = Math.floor(seconds / 3600)
+    dict[minutes] = Math.floor((seconds - dict[hours] * 3600)/60)
+    return (`${dict[hours]}:${dict[minutes]}`)
+  }
 
 const ToDo = mongoose.model('ToDo', ToDoSchema);
 module.exports = ToDo;

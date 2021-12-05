@@ -1,4 +1,7 @@
-$colour: #2542a1;
+$medium_glass: rgba(255, 255, 255, 0.5);
+$light_glass: rgba(255, 255, 255, 0.2);
+$shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+
 // General
 
 * {
@@ -11,80 +14,9 @@ $colour: #2542a1;
 html,
 body {
     overscroll-behavior: none;
-}
-
-// Background
-
-body {
-    background-image: url('/public/images/background.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-// Broader containers
-.full-body-container {
     display: flex;
-    align-items: center;
     flex-direction: column;
-
-}
-
-.parent-container {
-    margin-top: 1.5rem;
-}
-
-// Input forms
-
-.form-container {
-    border-radius: 20px;
-    background-color: rgba(255, 255, 255, 0.5);
-    margin: 5px;
-    padding: 0.5rem 1rem;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
-    justify-content: space-between;
-}
-
-
-%inputs {
-    // border: 1px solid black;
-    width: 5em;
-    font-size: 24px;
-    font-weight: lighter;
-    background: 0;
-    outline: 0;
-    border: 0;
-    padding: 0 1%;
-    line-height: 24px;
-
-}
-.reference-input {
-    @extend %inputs;
-    width: 20%;
-    border-right: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-.task-input {
-    @extend %inputs;
-    width: 66%;
-    // border-right: 1px solid rgba(255, 255, 255, 0.3);
-}
-
-%button {
-    color: white;
-    background-color: transparent;
-    cursor: pointer;
-    transition: all ease;
-    border: 0;
-    padding: 0 1%;
-}
-
-.reset-button {
-    @extend%button;
-    border-right: 1px solid rgba(255, 255, 255, 0.9);
-}
-
-.add-button {
-    @extend%button;
+    gap: 1.5em;
 }
 
 // Nav components
@@ -93,9 +25,8 @@ nav {
     height: 50px;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row;
     background-image: linear-gradient(rgb(29, 29, 29), rgb(46, 46, 46));
-
+    box-shadow: $shadow;
 }
 
 nav a {
@@ -113,40 +44,245 @@ nav a {
     border-radius: 5px;
 }
 
+// Background
+
+body {
+    background-image: url('/public/images/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    min-height: 100vh;
+}
+
+// Input forms
+
+.form-container {
+    border-radius: 25px;
+    background-color: $medium_glass;
+    padding: 10px 10px 10px 25px;
+    box-shadow: $shadow;
+    min-width: 40%;
+    margin: 0 auto;
+    gap: 10px;
+}
+
+.input-form {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+
+}
+
+%inputs {
+    // border: 1px solid black;
+    font-weight: lighter;
+    background: 0;
+    outline: 0;
+    border: 0;
+    padding: 0 1%;
+    line-height: 24px;
+}
+
+.reference-input {
+    @extend %inputs;
+    width: 20%;
+    border-right: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 24px;
+}
+
+.task-input {
+    @extend %inputs;
+    width: 66%;
+    font-size: 24px;
+    // border-right: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+// Edit form
+.edit-reference-input {
+    font-weight: lighter;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    width: 75px;
+    text-align: center;
+    margin: 0 10px;
+    max-height: 20px;
+    font-weight: lighter;
+    font-size: 16px;
+    outline: 0;
+    border: 1px solid rgba(199, 48, 48, 0.3);
+}
+
+.edit-task-input {
+    font-weight: lighter;
+    font-size: 16px;
+    background: none;
+    border: none;
+    outline: 0;
+    // box-shadow: $shadow;
+}
+
+.editForm {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 0 15px;
+    border-radius: 25px;
+    // box-shadow: $shadow;
+}
+
+.delete-form {
+    float: right;
+}
+
+.status {
+    float: left;
+    margin-right: 5px;
+}
+
+
+.reset-button,
+.add-button {
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 2px;
+    transition: all ease;
+    border: 0;
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
+}
+
+.edit-button,
+.delete-button,
+.timer-button,
+.completed-button,
+.incompleted-button {
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all ease;
+    border: 0;
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
+}
+.edit-button {
+    margin-right: 5px;
+}
+.timer-button {
+    margin-left: 10px;
+}
+
+.button-container {
+    margin-left: auto;
+}
+
+.form-button-container {
+    float: right;
+    margin-left: auto;
+}
+
+.duration {
+    font-weight: lighter;
+
+}
+// .reset-button:hover,
+// .add-button:hover {}
+
+
+// To do items
 
 .items-container {
-    border-radius: 0;
-    background-color: rgba(255, 255, 255, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 10px;
-    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
+    width: 40%;
+    margin: 0 auto;
+    padding: 15px;
+    background-color: $medium_glass;
+    box-shadow: $shadow;
+    border-radius: 10px;
 }
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 0;
+    padding: 0;
+}
+
 .line-item-container {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
+    padding: 0 15px;
+    border-radius: 25px;
+    background-color: $medium_glass;
+    border: 1px solid rgba(199, 48, 48, 0.3);
+    width: 80%;
+}
 
-    margin: 13px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+.form-line-item-container {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 15px;
+    border-radius: 25px;
+    background-color: $medium_glass;
+    border: 1px solid rgba(199, 48, 48, 0.3);
+    width: 60%;
+}
+
+.complete {
+    background-color: rgba(110, 110, 110, 0.5);
+}
+.item-complete {
+    float: left;
+    font-weight: lighter;
+    text-decoration: line-through;
+    font-size: 16px;
+    color: rgb(90, 88, 88);
+}
+.item-incomplete {
+    float: left;
+    font-weight: lighter;
+    font-size: 16px;
+
+}
+form {
+    border: 0;
+    margin: 0;
+    padding: 0;
 }
 
 li {
+    display: flex;
     font-weight: lighter;
     font-size: 16px;
+    align-items: center;
 }
 
+.ref-incomplete {
+    font-weight: lighter;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    width: 75px;
+    text-align: center;
+    margin: 0 10px;
+    max-height: 20px;
+    border: 1px solid rgba(199, 48, 48, 0.3);
 
-// .container {
-//     border-radius: 15px;
-//     background-color: white;
-//     opacity: 0.5;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     margin: 15px;
-//     flex-direction: row;
-//     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
-// }
+}
+.ref-complete {
+    font-weight: lighter;
+    text-decoration: line-through;
+    border-radius: 30px;
+    width: 75px;
+    text-align: center;
+    margin: 0 10px;
+    max-height: 20px;
+    background-color: rgba(110, 110, 110, 0.5);
+    color: rgb(90, 88, 88);
+    border: 1px solid rgba(199, 48, 48, 0.3);
+
+}
+
+.editForm {
+    display: flex;
+    min-width: 100%;
+    flex-direction: flex-start;
+    justify-self: center;
+    align-items: center;
+}
