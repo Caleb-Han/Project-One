@@ -28,16 +28,7 @@ const ToDoSchema = new Schema({
         type: Boolean,
         default: false
     }
-
 })
-
-
-function displayDuration(seconds) {
-    const dict = {}
-    dict[hours] = Math.floor(seconds / 3600)
-    dict[minutes] = Math.floor((seconds - dict[hours] * 3600)/60)
-    return (`${dict[hours]}:${dict[minutes]}`)
-  }
 
 const ToDo = mongoose.model('ToDo', ToDoSchema);
 module.exports = ToDo;

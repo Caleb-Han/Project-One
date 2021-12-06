@@ -24,7 +24,7 @@ app.set('view engine', 'ejs');
 
 app.get('/todolist', async (req,res) => {
     const toDoList = await ToDoItems.find({});
-    res.render('todolist', { toDoList});
+    res.render('todolist', { toDoList, displayDuration});
 })
 
 app.post('/todolist', async (req,res) => {
@@ -41,7 +41,15 @@ app.put('/todolist/:id/edit', async (req,res) => {
 })
 
 app.put('/todolist/:id/complete', async (req,res) => {
-    await ToDoItems.findByIdAndUpdate(req.params.id, {completed: true});
+    const item = await ToDoItems.findById(req.params.id)
+    
+    if (item.status === true) {
+        const endTime = new Date().getTime()/1000;
+        let new_duration = item.duration + (endTime - item.startTime) 
+        await ToDoItems.findByIdAndUpdate(req.params.id, {completed: true, status: false, duration: new_duration});
+    } else {
+        await ToDoItems.findByIdAndUpdate(req.params.id, {completed: true}); 
+    }
     res.redirect('/todolist');
 })
 
@@ -58,9 +66,9 @@ app.put('/todolist/:id/start', async (req,res) => {
     // Stops timer and updates duration of all other timers when start is pressed. 
     for (item of items) {
         let new_duration = item.duration + (endTime - item.startTime)
-        await ToDoItems.findByIdAndUpdate({_id: item._id, status: false, endTime: endTime, duration: new_duration})
+        console.log(item.duration, endTime - item.startTime)
+        await ToDoItems.findByIdAndUpdate(item._id, {status: false, endTime: endTime, duration: new_duration})
    } 
-    
    // Update the current item we started timing
    await ToDoItems.findByIdAndUpdate(req.params.id, {startTime: startTime, status: true});
     res.redirect('/todolist');
@@ -69,14 +77,23 @@ app.put('/todolist/:id/start', async (req,res) => {
 app.put('/todolist/:id/end', async (req,res) => {
     const endTime = new Date().getTime()/1000;
     const { startTime } = await ToDoItems.findById(req.params.id);
-    let new_duration = endTime - startTime
+    let new_duration = endTime - startTime  
     let { duration } = await ToDoItems.findById(req.params.id) 
     if (duration) {
         new_duration = new_duration + duration; 
     }
     await ToDoItems.findByIdAndUpdate(req.params.id, {endTime: endTime, duration: new_duration, status: false});
     console.log('send end Time')
-    res.redirect('/todolist'), {new_duration};
+    res.redirect('/todolist');
+})
+
+app.put('/todolist/resetAll', async (req,res) => {
+    await ToDoItems.updateMany({}, {startTime:0, endTime:0, duration: 0, status: false});
+    res.redirect('/todolist');
+})
+app.put('/todolist/:id/reset', async (req,res) => {
+    await ToDoItems.findByIdAndUpdate(req.params.id, {duration: 0, status: false});
+    res.redirect('/todolist');
 })
 
 app.delete('/todolist/:id', async (req,res) => {
@@ -90,3 +107,9 @@ app.get('/timesheet', (req, res) => {
 
 app.listen(3000, () => console.log('listening to Port 3000'))
 
+function displayDuration(seconds) {
+    let hours = Math.floor(seconds / 3600)
+    let minutes = Math.floor((seconds - hours * 3600)/60)
+    let second = Math.floor(seconds - hours * 3600 - minutes * 60)
+    return (`${hours}h ${minutes}m ${second}s`)
+  }

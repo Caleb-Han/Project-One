@@ -2,10 +2,12 @@
     <%- include ('./partials/navbar') %>
 
         <div class="form-container">
-            <form class="input-form" action="/todolist" method="POST">
-                <input class="reference-input" type="text" id="jobRef" name="jobRef" placeholder="Ref:">
-                <input class="task-input" type="text" id="toDoItem" name="toDoItem" placeholder="Task">
-                <button type="reset" class="reset-button"> <i class="fas fa-times fa-2x"></i></button>
+            <form class="input-form" action="/todolist" method="POST" autocomplete="off">
+                <input class="reference-input" type="text" id="jobRef" name="jobRef" placeholder="Ref:" required="true"
+                    maxlength="5">
+                <input class="task-input" type="text" id="toDoItem" name="toDoItem" placeholder="Task" required="true"
+                    maxlength="28">
+                <button type="clear" class="clear-button"> <i class="fas fa-times fa-2x"></i></button>
                 <button type="submit" class="add-button"><i class="fas fa-plus fa-2x"></i></button>
             </form>
         </div>
@@ -14,8 +16,7 @@
             <ul>
                 <% for (item of toDoList) { %>
                     <li>
-
-                        <!-- ITEM COMPLETED -->
+                        <!-- ITEM INCOMPLETE -->
                         <!-- Checkbox -->
                         <% if (item.completed===false) { %>
                             <div class="checkBox">
@@ -23,100 +24,124 @@
                                     <button class="incompleted-button"> <i class="far fa-square"></i></button>
                                 </form>
                             </div>
-
-                            <!-- item ref -->
+                            <!-- Job ref -->
                             <div class="ref ref-incomplete">
                                 <%= item.reference %>
                             </div>
-
-                            <!-- item -->
-                            <div class="data line-item-container">
+                            <!-- To do item -->
+                            <div class="line-item-container incomplete">
                                 <span class="item-incomplete">
                                     <%= item.description %>
                                 </span>
-                                <div class="button-container">
-
-                                    <!-- ITEM INCOMPLETE -->
-                                    <% } else { %>
-                                        <!-- Checkbox -->
-                                        <div class="checkBox">
-                                            <form action="/todolist/<%=item._id %>/incomplete?_method=PUT"
-                                                method="POST">
-                                                <button class="completed-button"> <i
-                                                        class="far fa-check-square"></i></button>
-                                            </form>
-                                        </div>
-
-                                        <!-- item ref -->
-                                        <div class="ref ref-complete">
-                                            <%= item.reference %>
-                                        </div>
-
-                                        <!-- item -->
-                                        <div class="data line-item-container">
-                                            <span class="item-complete">
-                                                <%= item.description %>
-                                            </span>
-                                            <div class="button-container">
-
+                            </div>
+                            <!-- Open edit form button-->
+                            <button class="edit-button">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <!-- Delete -->
+                            <span class="delete-form">
+                                <form action=" /todolist/<%=item._id %>?_method=DELETE" method="POST">
+                                    <button class="delete-button">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
+                            </span>
+                            <!-- Timer and reset -->
+                            <% if (item.status===false) { %>
+                                <form action="/todolist/<%=item._id %>/start?_method=PUT" method="POST">
+                                    <button class="timer-button"> <i class="fas fa-play-circle"></i></i></button>
+                                </form>
+                                <% } else { %>
+                                    <form action="/todolist/<%=item._id %>/end?_method=PUT" method="POST">
+                                        <button class="timer-button active"> <i
+                                                class="fas fa-pause-circle"></i></button>
+                                    </form>
+                                    <% } %>
+                                        <form action="/todolist/<%=item._id %>/reset?_method=PUT" method="POST">
+                                            <button class="reset-button"><i class="fas fa-history"></i></button>
+                                        </form>
+                                        <!-- ITEM COMPLETE -->
+                                        <% } else { %>
+                                            <!-- Checkbox -->
+                                            <div class="checkBox">
+                                                <form action="/todolist/<%=item._id %>/incomplete?_method=PUT"
+                                                    method="POST">
+                                                    <button class="completed-button"> <i
+                                                            class="far fa-check-square"></i></button>
+                                                </form>
+                                            </div>
+                                            <!-- Job ref -->
+                                            <div class="ref ref-complete">
+                                                <%= item.reference %>
+                                            </div>
+                                            <!-- To do item -->
+                                            <div class="data line-item-container complete">
+                                                <span class="item-complete">
+                                                    <%= item.description %>
+                                                </span>
                                                 <!-- Duration -->
                                                 <span class="duration">
-                                                    <%= (item.duration) %>
+                                                    <%= displayDuration(item.duration) %>
                                                 </span>
-                                                <% } %>
-
-                                                    <!-- Buttons -->
-                                                    <!-- EDIT AND DELETE -->
-                                                    <button class="edit-button">
-                                                        <i class="fas fa-edit"></i>
-                                                    </button>
-
-                                                    <span class="delete-form">
-                                                        <form action=" /todolist/<%=item._id %>?_method=DELETE"
-                                                            method="POST">
-                                                            <button class="delete-button">
-                                                                <i class="fas fa-trash-alt"></i>
-                                                            </button>
-                                                        </form>
-                                                    </span>
                                             </div>
-
-                                        </div>
-
-                                        <!-- Start/stop timer -->
-                                        <% if (item.status===false) { %>
-                                            <form action="/todolist/<%=item._id %>/start?_method=PUT" method="POST">
-                                                <button class="timer-button"> <i
-                                                        class="fas fa-play-circle"></i></i></button>
-                                            </form>
-                                            <% } else { %>
-                                                <form action="/todolist/<%=item._id %>/end?_method=PUT" method="POST">
-                                                    <button class="timer-button"> <i
-                                                            class="fas fa-pause-circle"></i></button>
+                                            <!-- Open edit form button -->
+                                            <button class="edit-button inactive">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <!-- Delete -->
+                                            <span class="delete-form">
+                                                <form action=" /todolist/<%=item._id %>?_method=DELETE" method="POST">
+                                                    <button class="delete-button">
+                                                        <i class="fas fa-trash-alt"></i>
+                                                    </button>
                                                 </form>
-                                                <% } %>
-
-                                                    <!-- HIDDEN EDIT -->
-
-                                                    <form class="editForm"
-                                                        action="/todolist/<%= item._id %>/edit?_method=PUT"
-                                                        method="POST" style="display:none;">
-                                                        <!-- ref edit input -->
-                                                        <input class="edit-reference-input" type=" text" id="jobRef"
-                                                            name="jobRef" value="<%= item.reference %>">
-                                                        <!-- item edit input -->
-                                                        <span class="form-button-container">
-                                                            <input class="edit-task-input form-line-item-container"
-                                                                type="text" id="toDoItem" name="toDoItem"
-                                                                value="<%= item.description %>">
-                                                            <button type="submit"> <i class="fas fa-plus"></i></button>
-                                                            <button class="cancelButton"><i
-                                                                    class="fas fa-times"></i></button>
-                                                        </span>
+                                            </span>
+                                            <!-- Timer and reset -->
+                                            <% if (item.status===false) { %>
+                                                <form action="/todolist/<%=item._id %>/start?_method=PUT" method="POST">
+                                                    <button class="timer-button inactive"> <i
+                                                            class="fas fa-play-circle"></i></i></button>
+                                                </form>
+                                                <% } else { %>
+                                                    <form action="/todolist/<%=item._id %>/end?_method=PUT"
+                                                        method="POST">
+                                                        <button class="timer-button inactive"> <i
+                                                                class="fas fa-pause-circle"></i></button>
                                                     </form>
+                                                    <% } %>
+                                                        <form action="/todolist/<%=item._id %>/reset?_method=PUT"
+                                                            method="POST">
+                                                            <button class="reset-button"><i
+                                                                    class="fas fa-history"></i></button>
+                                                        </form>
+                                                        <% } %>
+                                                            <!-- HIDDEN - Edit form -->
+                                                            <form class="editForm"
+                                                                action="/todolist/<%= item._id %>/edit?_method=PUT"
+                                                                method="POST" style="display:none" autocomplete="off">
+                                                                <!-- job ref edit -->
+                                                                <input class="edit-reference-input" type=" text"
+                                                                    id="jobRef" name="jobRef"
+                                                                    value="<%= item.reference %>">
+                                                                <!-- To do item edit -->
+                                                                <span class="form-button-container">
+                                                                    <input
+                                                                        class="edit-task-input form-line-item-container"
+                                                                        type="text" id="toDoItem" name="toDoItem"
+                                                                        value="<%= item.description %>">
+                                                                    <button class="confirmEditButton" type="submit"> <i
+                                                                            class="fas fa-check fa-lg"></i></button>
+                                                                    <button class="cancelButton"><i
+                                                                            class="fas fa-times fa-lg"></i></button>
+                                                                </span>
+                                                            </form>
                     </li>
-                    <!-- Edit form -->
                     <% } %>
             </ul>
+        </div>
+        <div class="reset-all">
+            <form action="/todolist/resetAll?_method=PUT" method="POST">
+                <button class="reset-button"><i class="fas fa-history"> Reset all</i></button>
+            </form>
         </div>
         <%- include ('./partials/footer') %>

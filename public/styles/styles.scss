@@ -1,9 +1,11 @@
+// Presets
 $medium_glass: rgba(255, 255, 255, 0.5);
 $light_glass: rgba(255, 255, 255, 0.2);
 $shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+$normal: 2px solid rgba(255, 255, 255, 0.3);
+$complete: 2px solid rgb(255, 145, 251);
 
 // General
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -16,36 +18,25 @@ body {
     overscroll-behavior: none;
     display: flex;
     flex-direction: column;
-    gap: 1.5em;
+    gap: 2em;
 }
 
-// Nav components
+// Navbar
 nav {
     display: flex;
-    height: 50px;
+    height: 48px;
     align-items: center;
-    justify-content: space-between;
-    background-image: linear-gradient(rgb(29, 29, 29), rgb(46, 46, 46));
+    justify-content: center;
+    background-image: linear-gradient(rgb(12, 12, 12), rgb(27, 27, 27));
     box-shadow: $shadow;
-}
 
-nav a {
-    text-decoration: none;
-    margin: 15px;
-    color: white;
-    font-weight: bold;
-}
-
-.logo {
-    background-color: white;
-    padding: 2px;
-    height: 28px;
-    width: 28px;
-    border-radius: 5px;
+    p {
+        font-size: 24px;
+        color: white;
+    }
 }
 
 // Background
-
 body {
     background-image: url('/public/images/background.jpg');
     background-size: cover;
@@ -53,27 +44,24 @@ body {
     min-height: 100vh;
 }
 
-// Input forms
-
+// Main To Do - Container
 .form-container {
     border-radius: 25px;
     background-color: $medium_glass;
     padding: 10px 10px 10px 25px;
     box-shadow: $shadow;
-    min-width: 40%;
+    width: 605px;
     margin: 0 auto;
-    gap: 10px;
 }
 
 .input-form {
     display: flex;
     justify-content: space-evenly;
     width: 100%;
-
 }
 
+// Main To Do - Inputs
 %inputs {
-    // border: 1px solid black;
     font-weight: lighter;
     background: 0;
     outline: 0;
@@ -93,7 +81,6 @@ body {
     @extend %inputs;
     width: 66%;
     font-size: 24px;
-    // border-right: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 // Edit form
@@ -101,14 +88,14 @@ body {
     font-weight: lighter;
     background-color: rgba(255, 255, 255, 0.5);
     border-radius: 30px;
-    width: 75px;
+    width: 71px;
     text-align: center;
-    margin: 0 10px;
-    max-height: 20px;
+    height: 20px;
     font-weight: lighter;
     font-size: 16px;
     outline: 0;
-    border: 1px solid rgba(199, 48, 48, 0.3);
+    border: $normal;
+    margin-top: 1px;
 }
 
 .edit-task-input {
@@ -117,7 +104,6 @@ body {
     background: none;
     border: none;
     outline: 0;
-    // box-shadow: $shadow;
 }
 
 .editForm {
@@ -126,20 +112,26 @@ body {
     justify-content: flex-start;
     padding: 0 15px;
     border-radius: 25px;
-    // box-shadow: $shadow;
+    width: 100%;
 }
-
-.delete-form {
+.form-button-container {
+    display: flex;
     float: right;
+    width: 84%;
+}
+.form-line-item-container {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 15px;
+    border-radius: 25px;
+    background-color: $medium_glass;
+    border: $normal;
+    width: 371px;
 }
 
-.status {
-    float: left;
-    margin-right: 5px;
-}
-
-
-.reset-button,
+// BUTTONS
+// Adding To Do Items
+.clear-button,
 .add-button {
     color: white;
     background-color: transparent;
@@ -150,11 +142,52 @@ body {
     filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
 }
 
+// Specific To Do item - Container
+.button-container {
+    margin-left: auto;
+}
+
+// Specific To Do item - General actions
 .edit-button,
 .delete-button,
 .timer-button,
 .completed-button,
-.incompleted-button {
+.incompleted-button,
+.reset-button {
+    color: white;
+    background-color: transparent;
+    cursor: pointer;
+    transition: 0.5s;
+    border: 0;
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
+}
+.edit-button:hover,
+.delete-button:hover,
+.timer-button:hover,
+.reset-button:hover {
+    transform: translateY(-0.25em);
+}
+
+.active {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0% {
+        transform: translateY(0em)
+    }
+    50% {
+        transform: translateY(-0.25em);
+    }
+
+    100% {
+        transform: translateY(0em);
+    }
+}
+
+// Specific To Do item - Edit actions
+.confirmEditButton,
+.cancelButton {
     color: white;
     background-color: transparent;
     cursor: pointer;
@@ -162,34 +195,39 @@ body {
     border: 0;
     filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
 }
-.edit-button {
-    margin-right: 5px;
+
+.confirmEditButton {
+    margin-left: 10px;
+    margin-right: 8px;
 }
+
+.edit-button,
+.timer-button {
+    margin-right: 10px;
+}
+
 .timer-button {
     margin-left: 10px;
 }
 
-.button-container {
-    margin-left: auto;
+// Inactive buttons
+.inactive {
+    color: $medium_glass;
+    background-color: transparent;
+    border: 0;
+    cursor: auto;
+    pointer-events: none;
+    filter: drop-shadow(0px 3px 3px rgba(0, 0, 0, .6));
 }
 
-.form-button-container {
-    float: right;
-    margin-left: auto;
+// Reset all button
+.reset-all {
+    display: flex;
+    justify-content: center;
 }
-
-.duration {
-    font-weight: lighter;
-
-}
-// .reset-button:hover,
-// .add-button:hover {}
-
-
-// To do items
-
+// TO DO ITEMS - General
 .items-container {
-    width: 40%;
+    width: 605px;
     margin: 0 auto;
     padding: 15px;
     background-color: $medium_glass;
@@ -201,50 +239,6 @@ ul {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    border: 0;
-    padding: 0;
-}
-
-.line-item-container {
-    display: flex;
-    justify-content: flex-start;
-    padding: 0 15px;
-    border-radius: 25px;
-    background-color: $medium_glass;
-    border: 1px solid rgba(199, 48, 48, 0.3);
-    width: 80%;
-}
-
-.form-line-item-container {
-    display: flex;
-    justify-content: flex-start;
-    padding: 0 15px;
-    border-radius: 25px;
-    background-color: $medium_glass;
-    border: 1px solid rgba(199, 48, 48, 0.3);
-    width: 60%;
-}
-
-.complete {
-    background-color: rgba(110, 110, 110, 0.5);
-}
-.item-complete {
-    float: left;
-    font-weight: lighter;
-    text-decoration: line-through;
-    font-size: 16px;
-    color: rgb(90, 88, 88);
-}
-.item-incomplete {
-    float: left;
-    font-weight: lighter;
-    font-size: 16px;
-
-}
-form {
-    border: 0;
-    margin: 0;
-    padding: 0;
 }
 
 li {
@@ -254,35 +248,66 @@ li {
     align-items: center;
 }
 
-.ref-incomplete {
-    font-weight: lighter;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 30px;
-    width: 75px;
-    text-align: center;
-    margin: 0 10px;
-    max-height: 20px;
-    border: 1px solid rgba(199, 48, 48, 0.3);
-
+.line-item-container {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 15px;
+    border-radius: 25px;
+    background-color: $medium_glass;
+    border: $normal;
+    width: 390px;
+    margin-right: 10px;
 }
+
+// COMPLETE TASKS
+// Complete - Container only
+.complete {
+    background-color: rgba(110, 110, 110, 0.5);
+}
+
+// Complete - items and ref
 .ref-complete {
     font-weight: lighter;
     text-decoration: line-through;
     border-radius: 30px;
     width: 75px;
     text-align: center;
-    margin: 0 10px;
-    max-height: 20px;
+    margin: 0 15px;
+    height: 20px;
     background-color: rgba(110, 110, 110, 0.5);
     color: rgb(90, 88, 88);
-    border: 1px solid rgba(199, 48, 48, 0.3);
-
+    line-height: 16px;
+    border: $normal;
+    cursor: default;
 }
 
-.editForm {
-    display: flex;
-    min-width: 100%;
-    flex-direction: flex-start;
-    justify-self: center;
-    align-items: center;
+.item-complete {
+    text-decoration: line-through;
+    color: rgb(90, 88, 88);
+}
+
+.duration {
+    font-weight: lighter;
+    color: white;
+    cursor: default;
+    margin-left: auto;
+}
+
+// INCOMPLETE TASKS
+.ref-incomplete {
+    font-weight: lighter;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 30px;
+    width: 75px;
+    text-align: center;
+    margin: 0 15px;
+    height: 20px;
+    line-height: 16px;
+    border: $normal;
+    cursor: default;
+}
+
+.item-incomplete {
+    margin-left: -1px;
+    cursor: default;
 }
