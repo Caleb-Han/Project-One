@@ -43,3 +43,5 @@ for (let i = 0; i < timerButton.length; i++) {
     timerButton[i].style.color = "white"
   }
 }
+
+// Better to have a map of active items.
